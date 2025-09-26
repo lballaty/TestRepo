@@ -1,0 +1,162 @@
+{
+  "env": {
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": 64000,
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": 1,
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": true,
+    "DISABLE_TELEMETRY": true,
+    "BASH_DEFAULT_TIMEOUT_MS": 120000,
+    "MCP_TIMEOUT": 30000
+  },
+  "permissions": {
+    "allow": [
+      "Read:",
+      "Edit(**/*.md)",
+      "Edit(**/*.txt)",
+      "Edit(**/*.yaml)",
+      "Edit(**/*.yml)", 
+      "Write(**/*.md)",
+      "Write(**/*.txt)",
+      "TodoWrite:",
+      "Bash(find:)",
+      "Bash(grep:)",
+      "Bash(tree:)",
+      "Bash(git status:)",
+      "Bash(git branch:)",
+      "Bash(git log --oneline -10:)",
+      "Bash(flutter --version:)",
+      "Bash(flutter doctor:)",
+      "Bash(flutter pub get:)",
+      "Bash(flutter clean:)",
+      "Bash(dart --version:)",
+      "Bash(dart format:)",
+      "Bash(dart analyze:)",
+      "Bash(adb devices:)",
+      "Bash(xcrun simctl list:)",
+      "Bash(curl:)",
+      "Bash(lsof:)",
+      "Glob:",
+      "Grep:"
+    ],
+    "deny": [
+      "MultiEdit(**/*.dart)",
+      "MultiEdit(**/*.yaml)",
+      "MultiEdit(**/*.sql)",
+      "MultiEdit:",
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)",
+      "Bash(flutter packages pub global activate:*)",
+      "Edit(**/pubspec.yaml)",
+      "Edit(**/.env)",
+      "Edit(**/android/app/build.gradle)",
+      "Edit(**/ios/Runner/Info.plist)",
+      "Write(**/*.dart)",
+      "Write(**/*.sql)"
+    ],
+    "ask": [
+      "Edit(**/*.dart)",
+      "Edit(**/*.sql)",
+      "Edit(**/lib/**/*.dart)",
+      "Edit(**/test/**/*.dart)",
+      "Edit(**/integration_test/**/*.dart)",
+      "Write(**/*.dart)",
+      "Write(**/*.sql)",
+      "Bash(flutter test:*)",
+      "Bash(flutter test)",
+      "Bash(flutter run:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter pub add:*)",
+      "Bash(flutter pub remove:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(git checkout:*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📋 REMINDER: Update ActionsToDo.md or project todo list to maintain continuity across conversation restarts.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(**/*.dart)",
+        "hooks": [
+          {
+            "type": "command", 
+            "command": "echo '🎯 DART FILE EDITED: Check file header, business-friendly naming, widget documentation. Run dart analyze and flutter test.'"
+          },
+          {
+            "type": "command",
+            "command": "dart format . --set-exit-if-changed || echo '⚠️ Code formatting issues found - run dart format'"
+          },
+          {
+            "type": "command",
+            "command": "dart analyze --fatal-infos || echo '❌ Static analysis issues found - review before committing'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(**/lib/**/*.dart)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🏗️ FLUTTER WIDGET/SERVICE EDITED: Verify widget tests exist and pass. Check state management patterns.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(**/*.sql)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🗄️ DATABASE SCHEMA CHANGE: Verify schema naming conventions, test migration, check for breaking changes.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit(**/pubspec.yaml)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📦 PUBSPEC CHANGED: Run flutter pub get to update dependencies. Verify version constraints.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(flutter test:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🧪 FLUTTER TESTS EXECUTED: Review test results. Ensure widget tests and integration tests pass.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git add:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📤 STAGING CHANGES: Run flutter test before commit. Verify all files have proper headers and documentation.'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '✅ COMMIT READY: Verify author is \"Libor Ballaty <libor@arionetworks.com>\" and message ends with \"Questions: libor@arionetworks.com\"'"
+          }
+        ]
+      }
+    ]
+  }
+}
