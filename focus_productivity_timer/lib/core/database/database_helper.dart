@@ -1,7 +1,7 @@
-# File: /Users/liborballaty/LocalProjects/GitHubProjectsDocuments/TestRepo/focus_productivity_timer/lib/core/database/database_helper.dart
-# Description: SQLite database helper for local data storage and management
-# Author: Libor Ballaty <libor@arionetworks.com>
-# Created: 2025-09-26
+// File: /Users/liborballaty/LocalProjects/GitHubProjectsDocuments/TestRepo/focus_productivity_timer/lib/core/database/database_helper.dart
+// Description: SQLite database helper for local data storage and management
+// Author: Libor Ballaty <libor@arionetworks.com>
+// Created: 2025-09-26
 
 import 'dart:io';
 import 'package:path/path.dart';
