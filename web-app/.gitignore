@@ -6,6 +6,15 @@ node_modules/
 # Testing
 /coverage
 *.log
+test-results/
+playwright-report/
+*.zip
+*-failed-*.png
+*-retry-*.png
+*-actual.png
+*-expected.png
+*-diff.png
+*.webm
 
 # Next.js
 /.next/

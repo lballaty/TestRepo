@@ -333,7 +333,7 @@ class SessionPersistenceService {
     if (completedSessions.length === 0) return 0;
 
     let streak = 0;
-    let currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
 
     for (const session of completedSessions) {

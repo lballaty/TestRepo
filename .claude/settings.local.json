@@ -13,7 +13,11 @@
       "Bash(npm run test:e2e:profiles:*)",
       "Bash(npm run build:*)",
       "Bash(chmod:*)",
-      "Bash(./stop.sh)"
+      "Bash(./stop.sh)",
+      "Bash(git add .)",
+      "Bash(git commit:*)",
+      "Bash(./test.sh)",
+      "Bash(timeout:*)"
     ],
     "deny": [
       "Bash(rm -rf /)",

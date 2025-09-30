@@ -6,10 +6,22 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Profile } from '@/types/profile.types';
 import { useFocusTimerStore } from '@/store/focusTimerStore';
 import { JAPANESE_EXERCISE_SERIES, getAllJapaneseExerciseSeries } from '@/data/japanese-exercise-series';
 import { getAllBreathingProfiles } from '@/data/breathing-profiles';
+
+// Simplified UI Profile interface for ProfileManager component
+interface UIProfile {
+  id: string;
+  name: string;
+  description: string;
+  durationMinutes: number;
+  breakMinutes: number;
+  isDefault: boolean;
+  color: string;
+  icon: string;
+  exerciseSeries?: any; // Optional exercise series
+}
 
 interface ProfileFormData {
   name: string;
@@ -22,7 +34,7 @@ interface ProfileFormData {
   icon: string;
 }
 
-const DEFAULT_PROFILES: Profile[] = [
+const DEFAULT_PROFILES: UIProfile[] = [
   {
     id: 'pomodoro',
     name: 'Pomodoro',
@@ -223,8 +235,8 @@ const PROFILE_COLORS = [
 ];
 
 export default function ProfileManager() {
-  const [profiles, setProfiles] = useState<Profile[]>(DEFAULT_PROFILES);
-  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [profiles, setProfiles] = useState<UIProfile[]>(DEFAULT_PROFILES);
+  const [selectedProfile, setSelectedProfile] = useState<UIProfile | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<ProfileFormData>({
@@ -260,7 +272,7 @@ export default function ProfileManager() {
     }
   }, []);
 
-  const handleSelectProfile = (profile: Profile) => {
+  const handleSelectProfile = (profile: UIProfile) => {
     setSelectedProfile(profile);
     setActiveTimerProfile(profile);
 
@@ -273,7 +285,7 @@ export default function ProfileManager() {
   };
 
   const handleCreateProfile = () => {
-    const newProfile: Profile = {
+    const newProfile: UIProfile = {
       id: `custom-${Date.now()}`,
       name: formData.name,
       description: formData.description,
@@ -296,7 +308,7 @@ export default function ProfileManager() {
     resetForm();
   };
 
-  const handleEditProfile = (profile: Profile) => {
+  const handleEditProfile = (profile: UIProfile) => {
     setIsEditing(true);
     const totalMinutes = Math.floor(profile.durationMinutes);
     const totalSeconds = Math.round((profile.durationMinutes % 1) * 60);
@@ -318,7 +330,7 @@ export default function ProfileManager() {
   const handleUpdateProfile = () => {
     if (!selectedProfile) return;
 
-    const updatedProfile: Profile = {
+    const updatedProfile: UIProfile = {
       ...selectedProfile,
       name: formData.name,
       description: formData.description,
