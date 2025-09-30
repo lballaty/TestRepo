@@ -1,0 +1,16 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Scattered bamboo leaves - very minimal -->
+  <ellipse cx="80" cy="50" rx="12" ry="4" fill="url(#leaf)" transform="rotate(25 80 50)"/>
+  <ellipse cx="320" cy="80" rx="10" ry="3" fill="url(#leaf)" transform="rotate(-15 320 80)"/>
+  <ellipse cx="150" cy="150" rx="8" ry="3" fill="url(#leaf)" transform="rotate(45 150 150)"/>
+  <ellipse cx="280" cy="200" rx="11" ry="4" fill="url(#leaf)" transform="rotate(-30 280 200)"/>
+  <ellipse cx="50" cy="220" rx="9" ry="3" fill="url(#leaf)" transform="rotate(60 50 220)"/>
+  <ellipse cx="350" cy="250" rx="7" ry="2" fill="url(#leaf)" transform="rotate(15 350 250)"/>
+</svg>

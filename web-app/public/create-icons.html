@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate LiveLong PWA Icons</title>
+</head>
+<body>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+
+    <script>
+    function createIcon(canvasId, size) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, size, size);
+        gradient.addColorStop(0, '#3b82f6');
+        gradient.addColorStop(1, '#1e40af');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        // Add rounded corners
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.beginPath();
+        ctx.roundRect(0, 0, size, size, size * 0.2);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Main text
+        ctx.fillStyle = 'white';
+        ctx.font = `bold ${size * 0.15}px system-ui`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('LiveLong', size/2, size/2 - size * 0.05);
+
+        // Subtitle symbol
+        ctx.font = `${size * 0.1}px system-ui`;
+        ctx.fillText('⊹', size/2, size/2 + size * 0.08);
+
+        return canvas.toDataURL('image/png');
+    }
+
+    // Create icons and download
+    const icon192 = createIcon('canvas192', 192);
+    const icon512 = createIcon('canvas512', 512);
+
+    // Create download links
+    const link192 = document.createElement('a');
+    link192.download = 'icon-192x192.png';
+    link192.href = icon192;
+    link192.textContent = 'Download 192x192 icon';
+    document.body.appendChild(link192);
+
+    const link512 = document.createElement('a');
+    link512.download = 'icon-512x512.png';
+    link512.href = icon512;
+    link512.textContent = 'Download 512x512 icon';
+    document.body.appendChild(link512);
+    </script>
+</body>
+</html>
