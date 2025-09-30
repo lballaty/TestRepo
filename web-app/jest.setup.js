@@ -4,12 +4,22 @@
 // Created: 2025-09-30
 
 import '@testing-library/jest-dom';
+import 'fake-indexeddb/auto';
 
-// Mock IndexedDB for tests
-global.indexedDB = {
-  open: jest.fn(),
-  deleteDatabase: jest.fn(),
-};
+// Import fake IndexedDB implementation
+import FDBFactory from 'fake-indexeddb/lib/FDBFactory';
+import FDBKeyRange from 'fake-indexeddb/lib/FDBKeyRange';
+
+// Set up fake IndexedDB in global scope
+global.indexedDB = new FDBFactory();
+global.IDBKeyRange = FDBKeyRange;
+
+// Polyfill for structuredClone (not available in older Node versions)
+if (typeof structuredClone === 'undefined') {
+  global.structuredClone = (obj) => {
+    return JSON.parse(JSON.stringify(obj));
+  };
+}
 
 // Mock Web Workers
 global.Worker = class Worker {
