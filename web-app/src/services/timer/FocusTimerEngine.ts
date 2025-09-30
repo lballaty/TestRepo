@@ -10,6 +10,7 @@ import {
   TimerStateChangeListener,
   TimerEvent
 } from '@/types/timer.types';
+import { getBackgroundTimerService, BackgroundTimerWorkerService } from './BackgroundTimerWorkerService';
 
 /**
  * Focus Timer Engine Implementation
@@ -27,9 +28,46 @@ export class FocusTimerEngine implements ITimerController {
   private timerStartTimestamp: number | null = null;
   private pausedAtTimestamp: number = 0;
   private accumulatedPauseMilliseconds: number = 0;
+  private backgroundTimerService: BackgroundTimerWorkerService | null = null;
+  private workerUpdateUnsubscribe: (() => void) | null = null;
+  private workerCompletionUnsubscribe: (() => void) | null = null;
+  private useWebWorker: boolean = false;
 
   constructor(initialDurationSeconds: number = 1500) { // Default 25 minutes
     this.setTimerDurationInSeconds(initialDurationSeconds);
+    this.initializeBackgroundService();
+  }
+
+  /**
+   * Initialize background timer service for iOS PWA support
+   */
+  private initializeBackgroundService(): void {
+    try {
+      this.backgroundTimerService = getBackgroundTimerService();
+
+      // Check if we're on iOS and should use worker
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+
+      this.useWebWorker = (isIOS || isPWA) && this.backgroundTimerService.isWorkerSupported();
+
+      if (this.useWebWorker) {
+        // Subscribe to worker updates
+        this.workerUpdateUnsubscribe = this.backgroundTimerService.subscribeToTimerUpdates((status) => {
+          this.remainingDurationSeconds = status.remainingSeconds;
+          this.currentTimerState = status.isRunning ? TimerState.RUNNING :
+                                   status.isComplete ? TimerState.IDLE : TimerState.PAUSED;
+          this.notifyStateChangeListeners(TimerEvent.TICK);
+        });
+
+        this.workerCompletionUnsubscribe = this.backgroundTimerService.subscribeToCompletion(() => {
+          this.handleTimerCompletion();
+        });
+      }
+    } catch (error) {
+      console.warn('Background timer service not available, using fallback:', error);
+      this.useWebWorker = false;
+    }
   }
 
   /**
@@ -43,6 +81,11 @@ export class FocusTimerEngine implements ITimerController {
   public setTimerDurationInSeconds(durationInSeconds: number): void {
     this.plannedDurationSeconds = durationInSeconds;
     this.remainingDurationSeconds = this.plannedDurationSeconds;
+
+    if (this.useWebWorker && this.backgroundTimerService) {
+      this.backgroundTimerService.setTimerDuration(durationInSeconds);
+    }
+
     this.notifyStateChangeListeners(TimerEvent.RESET);
   }
 
@@ -66,18 +109,24 @@ export class FocusTimerEngine implements ITimerController {
 
     this.currentTimerState = TimerState.RUNNING;
 
-    // Calculate actual start time accounting for any previous progress
-    const elapsedSeconds = this.plannedDurationSeconds - this.remainingDurationSeconds;
-    this.timerStartTimestamp = Date.now() - (elapsedSeconds * 1000);
+    // Use Web Worker for background operation if available
+    if (this.useWebWorker && this.backgroundTimerService) {
+      this.backgroundTimerService.startBackgroundTimer(this.remainingDurationSeconds);
+    } else {
+      // Fallback to regular timer
+      // Calculate actual start time accounting for any previous progress
+      const elapsedSeconds = this.plannedDurationSeconds - this.remainingDurationSeconds;
+      this.timerStartTimestamp = Date.now() - (elapsedSeconds * 1000);
 
-    // Reset accumulated pause time when starting fresh
-    if (this.remainingDurationSeconds === this.plannedDurationSeconds) {
-      this.accumulatedPauseMilliseconds = 0;
+      // Reset accumulated pause time when starting fresh
+      if (this.remainingDurationSeconds === this.plannedDurationSeconds) {
+        this.accumulatedPauseMilliseconds = 0;
+      }
+
+      this.timerIntervalId = setInterval(() => {
+        this.updateTimerProgress();
+      }, 100); // Check every 100ms for smooth UI updates
     }
-
-    this.timerIntervalId = setInterval(() => {
-      this.updateTimerProgress();
-    }, 100); // Check every 100ms for smooth UI updates
 
     this.notifyStateChangeListeners(TimerEvent.START);
   }
@@ -92,11 +141,16 @@ export class FocusTimerEngine implements ITimerController {
     if (this.currentTimerState !== TimerState.RUNNING) return;
 
     this.currentTimerState = TimerState.PAUSED;
-    this.pausedAtTimestamp = Date.now();
 
-    if (this.timerIntervalId) {
-      clearInterval(this.timerIntervalId);
-      this.timerIntervalId = null;
+    if (this.useWebWorker && this.backgroundTimerService) {
+      this.backgroundTimerService.pauseBackgroundTimer();
+    } else {
+      this.pausedAtTimestamp = Date.now();
+
+      if (this.timerIntervalId) {
+        clearInterval(this.timerIntervalId);
+        this.timerIntervalId = null;
+      }
     }
 
     this.notifyStateChangeListeners(TimerEvent.PAUSE);
@@ -111,12 +165,18 @@ export class FocusTimerEngine implements ITimerController {
   public resumeTimer(): void {
     if (this.currentTimerState !== TimerState.PAUSED) return;
 
-    if (this.pausedAtTimestamp && this.timerStartTimestamp) {
-      const currentPauseDuration = Date.now() - this.pausedAtTimestamp;
-      this.accumulatedPauseMilliseconds += currentPauseDuration;
+    if (this.useWebWorker && this.backgroundTimerService) {
+      this.backgroundTimerService.resumeBackgroundTimer();
+      this.currentTimerState = TimerState.RUNNING;
+    } else {
+      if (this.pausedAtTimestamp && this.timerStartTimestamp) {
+        const currentPauseDuration = Date.now() - this.pausedAtTimestamp;
+        this.accumulatedPauseMilliseconds += currentPauseDuration;
+      }
+
+      this.startFocusTimer();
     }
 
-    this.startFocusTimer();
     this.notifyStateChangeListeners(TimerEvent.RESUME);
   }
 
@@ -129,9 +189,13 @@ export class FocusTimerEngine implements ITimerController {
   public stopTimer(): void {
     this.currentTimerState = TimerState.STOPPED;
 
-    if (this.timerIntervalId) {
-      clearInterval(this.timerIntervalId);
-      this.timerIntervalId = null;
+    if (this.useWebWorker && this.backgroundTimerService) {
+      this.backgroundTimerService.stopBackgroundTimer();
+    } else {
+      if (this.timerIntervalId) {
+        clearInterval(this.timerIntervalId);
+        this.timerIntervalId = null;
+      }
     }
 
     this.notifyStateChangeListeners(TimerEvent.STOP);
@@ -272,6 +336,17 @@ export class FocusTimerEngine implements ITimerController {
   public destroyTimer(): void {
     this.stopTimer();
     this.stateChangeListeners.clear();
+
+    // Clean up Web Worker subscriptions
+    if (this.workerUpdateUnsubscribe) {
+      this.workerUpdateUnsubscribe();
+      this.workerUpdateUnsubscribe = null;
+    }
+
+    if (this.workerCompletionUnsubscribe) {
+      this.workerCompletionUnsubscribe();
+      this.workerCompletionUnsubscribe = null;
+    }
   }
 
   // Backward compatibility aliases
