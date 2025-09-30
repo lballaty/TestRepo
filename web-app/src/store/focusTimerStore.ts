@@ -7,12 +7,18 @@ import { create } from 'zustand';
 import { FocusTimerEngine } from '@/services/timer/FocusTimerEngine';
 import { TimerData, TimerState, TimerEvent } from '@/types/timer.types';
 import { Profile } from '@/types/profile.types';
+import { sessionPersistenceService } from '@/services/storage/SessionPersistenceService';
 
 interface FocusTimerStore {
   // State
   currentTimerData: TimerData;
   activeTimerProfile: Profile | null;
   focusTimerEngine: FocusTimerEngine | null;
+
+  // Session tracking
+  currentSessionId: string | null;
+  sessionStartTime: number | null;
+  sessionInterruptions: number;
 
   // Timer Duration Actions (seconds for precision)
   initializeTimerWithSeconds: (durationInSeconds: number) => void;
@@ -32,6 +38,10 @@ interface FocusTimerStore {
   getFormattedTimeDisplay: () => string;
   getSessionProgressPercentage: () => number;
   getRemainingTimeInSeconds: () => number;
+
+  // Session Tracking
+  addSessionInterruption: () => void;
+  saveCompletedSession: (completionStatus: 'completed' | 'paused' | 'cancelled' | 'interrupted') => Promise<void>;
 }
 
 export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
@@ -44,6 +54,11 @@ export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
   },
   activeTimerProfile: null,
   focusTimerEngine: null,
+
+  // Session tracking initial state
+  currentSessionId: null,
+  sessionStartTime: null,
+  sessionInterruptions: 0,
 
   // Initialize timer with seconds for exercises and custom intervals
   initializeTimerWithSeconds: (durationInSeconds: number) => {
@@ -58,9 +73,10 @@ export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
     newTimerEngine.subscribeToTimerUpdates((timerData: TimerData, timerEvent: TimerEvent) => {
       set({ currentTimerData: timerData });
 
-      // Handle completion with celebration
+      // Handle completion with celebration and session saving
       if (timerEvent === TimerEvent.COMPLETE) {
         console.log('🎉 Focus session completed successfully!');
+        get().saveCompletedSession('completed');
         // Here we would trigger notification, haptic feedback, etc.
       }
     });
@@ -83,11 +99,24 @@ export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
       // Default to 25 minutes if no engine exists
       get().initializeTimerWithMinutes(25);
     }
+
+    // Initialize session tracking
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const sessionStartTime = Date.now();
+
+    set({
+      currentSessionId: sessionId,
+      sessionStartTime,
+      sessionInterruptions: 0,
+    });
+
+    console.log('Focus session started:', sessionId);
     get().focusTimerEngine?.startFocusTimer();
   },
 
   // Pause current focus session
   pauseFocusSession: () => {
+    get().addSessionInterruption();
     get().focusTimerEngine?.pauseTimer();
   },
 
@@ -98,6 +127,7 @@ export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
 
   // Stop and end focus session
   stopFocusSession: () => {
+    get().saveCompletedSession('cancelled');
     get().focusTimerEngine?.stopTimer();
   },
 
@@ -137,5 +167,50 @@ export const useFocusTimerStore = create<FocusTimerStore>((set, get) => ({
   // Get remaining seconds for precise tracking
   getRemainingTimeInSeconds: () => {
     return get().currentTimerData.remainingSeconds;
+  },
+
+  // Add session interruption (when user pauses/stops)
+  addSessionInterruption: () => {
+    set(state => ({
+      sessionInterruptions: state.sessionInterruptions + 1
+    }));
+  },
+
+  // Save completed session to IndexedDB
+  saveCompletedSession: async (completionStatus: 'completed' | 'paused' | 'cancelled' | 'interrupted') => {
+    const state = get();
+
+    if (!state.currentSessionId || !state.sessionStartTime || !state.activeTimerProfile) {
+      console.warn('No active session to save');
+      return;
+    }
+
+    try {
+      const endTime = Date.now();
+      const actualDurationSeconds = Math.floor((endTime - state.sessionStartTime) / 1000);
+
+      await sessionPersistenceService.saveTimerSession({
+        profileId: state.activeTimerProfile.id,
+        profileName: state.activeTimerProfile.name,
+        plannedDurationSeconds: state.currentTimerData.totalSeconds,
+        actualDurationSeconds,
+        completionStatus,
+        startTimestamp: state.sessionStartTime,
+        endTimestamp: endTime,
+        interruptions: state.sessionInterruptions,
+      });
+
+      console.log('Session saved successfully:', state.currentSessionId, completionStatus);
+
+      // Clear session tracking
+      set({
+        currentSessionId: null,
+        sessionStartTime: null,
+        sessionInterruptions: 0,
+      });
+
+    } catch (error) {
+      console.error('Failed to save session:', error);
+    }
   }
 }));

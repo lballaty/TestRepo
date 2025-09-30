@@ -16,6 +16,53 @@ export enum ProfileCategory {
 }
 
 /**
+ * Exercise step in a series
+ * Represents one exercise within a sequence
+ */
+export interface ExerciseStep {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly durationMinutes: number;
+  readonly restDurationMinutes: number;
+  readonly instructions?: string;
+  readonly videoUrl?: string;
+  readonly imageUrl?: string;
+}
+
+/**
+ * Breathing pattern for meditation and relaxation
+ */
+export interface BreathingPattern {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly inhaleSeconds: number;
+  readonly holdInSeconds?: number;
+  readonly exhaleSeconds: number;
+  readonly holdOutSeconds?: number;
+  readonly cycles: number;
+  readonly backgroundAnimation?: string; // Animation theme
+  readonly visualStyle?: 'circle' | 'square' | 'flower' | 'wave';
+}
+
+/**
+ * Exercise series configuration
+ * Defines a sequence of exercises with breaks
+ */
+export interface ExerciseSeries {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly steps: ExerciseStep[];
+  readonly warmupDurationMinutes?: number;
+  readonly cooldownDurationMinutes?: number;
+  readonly totalDurationMinutes: number; // Calculated from all steps
+  readonly breathingPattern?: BreathingPattern; // Optional breathing guide
+  readonly backgroundAnimation?: string; // Background animation theme
+}
+
+/**
  * Profile interface
  * Represents a timer profile configuration
  */
@@ -31,6 +78,7 @@ export interface Profile {
   readonly notificationSound?: string;
   readonly themeColor?: string;
   readonly aiCoachingEnabled: boolean;
+  readonly exerciseSeries?: ExerciseSeries; // Optional exercise series for workout profiles
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }

@@ -9,7 +9,11 @@
   },
   "permissions": {
     "allow": [
-      "*"
+      "*",
+      "Bash(npm run test:e2e:profiles:*)",
+      "Bash(npm run build:*)",
+      "Bash(chmod:*)",
+      "Bash(./stop.sh)"
     ],
     "deny": [
       "Bash(rm -rf /)",

@@ -9,6 +9,9 @@ import React, { useEffect, useState } from 'react';
 import { useFocusTimerStore } from '@/store/focusTimerStore';
 import { TimerState } from '@/types/timer.types';
 import ProfileManager from '@/components/profiles/ProfileManager';
+import PWAStatusIndicator from '@/components/pwa/PWAStatusIndicator';
+import BreathingVisualizer from '@/components/breathing/BreathingVisualizer';
+import { BREATHING_PATTERNS } from '@/data/breathing-patterns';
 
 export default function FocusTimerDisplay() {
   const {
@@ -30,11 +33,91 @@ export default function FocusTimerDisplay() {
   const [customSeconds, setCustomSeconds] = useState(0);
   const [showCustomDurationPanel, setShowCustomDurationPanel] = useState(false);
   const [showProfileManager, setShowProfileManager] = useState(false);
+  const [showBreathingMode, setShowBreathingMode] = useState(false);
+  const [breathingPattern, setBreathingPattern] = useState(null);
 
-  // Initialize timer on mount
+  // Initialize timer on mount - load saved profile or default
   useEffect(() => {
-    initializeTimerWithMinutes(25); // Default 25 minutes
-  }, []);
+    const initializeTimerFromProfile = () => {
+      // Try to restore last selected profile
+      const lastProfileId = localStorage.getItem('lastSelectedProfile');
+      if (lastProfileId) {
+        // Load default profiles to find the saved one
+        const DEFAULT_PROFILES = [
+          { id: 'pomodoro', name: 'Pomodoro', durationMinutes: 25, isDefault: true },
+          { id: 'deep-work', name: 'Deep Work', durationMinutes: 90, isDefault: false },
+          { id: 'exercise', name: 'Exercise Intervals', durationMinutes: 0.5, isDefault: false },
+          { id: 'meditation', name: 'Meditation', durationMinutes: 10, isDefault: false },
+          { id: 'rajio-taiso', name: 'Rajio Taiso', durationMinutes: 6, isDefault: false },
+          { id: 'tai-chi-morning', name: 'Tai Chi Morning', durationMinutes: 15, isDefault: false },
+          { id: 'shinrin-yoku', name: 'Shinrin-yoku', durationMinutes: 20, isDefault: false },
+          { id: 'hara-hachi-bu', name: 'Hara Hachi Bu', durationMinutes: 12, isDefault: false },
+          { id: 'ikigai-reflection', name: 'Ikigai Reflection', durationMinutes: 25, isDefault: false },
+          { id: 'zazen-sitting', name: 'Zazen Sitting', durationMinutes: 30, isDefault: false },
+          { id: 'longevity-walk', name: 'Longevity Walk', durationMinutes: 45, isDefault: false },
+          { id: 'box-breathing', name: 'Box Breathing', durationMinutes: 5.3, isDefault: false },
+          { id: '4-7-8-breathing', name: '4-7-8 Relaxation', durationMinutes: 11.5, isDefault: false },
+          { id: 'deep-breathing', name: 'Deep Breathing', durationMinutes: 14, isDefault: false }
+        ];
+
+        // Load custom profiles from localStorage
+        const savedProfiles = localStorage.getItem('timerProfiles');
+        let allProfiles = DEFAULT_PROFILES;
+        if (savedProfiles) {
+          allProfiles = JSON.parse(savedProfiles);
+        }
+
+        const savedProfile = allProfiles.find(p => p.id === lastProfileId);
+        if (savedProfile) {
+          console.log('Restoring profile on page load:', savedProfile.name, 'Duration:', savedProfile.durationMinutes);
+          initializeTimerWithMinutes(savedProfile.durationMinutes);
+          return;
+        }
+      }
+
+      // Default to 25 minutes if no saved profile
+      console.log('Using default 25 minutes');
+      initializeTimerWithMinutes(25);
+    };
+
+    initializeTimerFromProfile();
+  }, []); // Only run on mount
+
+  // Check if current profile is a breathing profile and set up breathing mode
+  useEffect(() => {
+    if (activeTimerProfile && activeTimerProfile.exerciseSeries?.backgroundAnimation?.includes('breathing') ||
+        ['box-breathing', '4-7-8-breathing', 'deep-breathing'].includes(activeTimerProfile.id)) {
+      // Get breathing pattern based on profile
+      let pattern = null;
+      switch (activeTimerProfile.id) {
+        case 'box-breathing':
+          pattern = BREATHING_PATTERNS.BOX_BREATHING;
+          break;
+        case '4-7-8-breathing':
+          pattern = BREATHING_PATTERNS.FOUR_SEVEN_EIGHT_BREATHING;
+          break;
+        case 'deep-breathing':
+          pattern = BREATHING_PATTERNS.DEEP_BREATHING;
+          break;
+        default:
+          if (activeTimerProfile.exerciseSeries?.breathingPattern) {
+            pattern = activeTimerProfile.exerciseSeries.breathingPattern;
+          }
+      }
+      setBreathingPattern(pattern);
+    } else {
+      setBreathingPattern(null);
+    }
+  }, [activeTimerProfile]);
+
+  // Auto-start breathing mode when timer starts for breathing profiles
+  useEffect(() => {
+    if (currentTimerData.state === TimerState.RUNNING && breathingPattern) {
+      setShowBreathingMode(true);
+    } else if (currentTimerData.state === TimerState.IDLE || currentTimerData.state === TimerState.STOPPED) {
+      setShowBreathingMode(false);
+    }
+  }, [currentTimerData.state, breathingPattern]);
 
   const sessionProgress = getSessionProgressPercentage();
   const formattedTimeDisplay = getFormattedTimeDisplay();
@@ -133,8 +216,11 @@ export default function FocusTimerDisplay() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full">
 
-        {/* Profile or Timer Name */}
+        {/* App Title and Profile Name */}
         <div className="text-center mb-8">
+          <h1 className="text-lg font-light text-gray-500 mb-2 tracking-wide">
+            LiveLong ⊹
+          </h1>
           <h2 className="text-2xl font-bold text-gray-800">
             {activeTimerProfile?.name || 'Focus Timer'}
           </h2>
@@ -314,6 +400,19 @@ export default function FocusTimerDisplay() {
           </span>
         </div>
 
+        {/* Breathing Mode Button (for breathing profiles) */}
+        {breathingPattern && currentTimerData.state === TimerState.IDLE && (
+          <div className="mt-4">
+            <button
+              onClick={() => setShowBreathingMode(true)}
+              className="w-full px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm font-medium"
+              data-testid="start-breathing-button"
+            >
+              Start Breathing Guide
+            </button>
+          </div>
+        )}
+
         {/* Profile Manager Button */}
         <div className="mt-4">
           <button
@@ -331,6 +430,19 @@ export default function FocusTimerDisplay() {
         <div className="mt-6">
           <ProfileManager />
         </div>
+      )}
+
+      {/* PWA Status Indicator */}
+      <PWAStatusIndicator />
+
+      {/* Breathing Visualizer */}
+      {breathingPattern && showBreathingMode && (
+        <BreathingVisualizer
+          pattern={breathingPattern}
+          isActive={showBreathingMode}
+          onComplete={() => setShowBreathingMode(false)}
+          onCycleComplete={(cycle) => console.log(`Breathing cycle ${cycle} completed`)}
+        />
       )}
     </div>
   );

@@ -1,25 +1,69 @@
-# TestRepo
+# LiveLong ⊹
 
-Auto-generated project bootstrapped with Claude Code.
+A productivity timer inspired by Japanese longevity wisdom, combining traditional focus techniques with breathing exercises and wellness practices.
+
+## ✨ Features
+
+### 🍅 **Classic Focus Timers**
+- Pomodoro (25 min) - Classic productivity technique
+- Deep Work (90 min) - Extended focus sessions
+- Custom durations - Flexible timing with minutes and seconds
+
+### 🏯 **Japanese Longevity Exercises**
+- **Rajio Taiso** - Traditional Japanese radio calisthenics
+- **Tai Chi Morning** - Gentle flowing movements
+- **Shinrin-yoku** - Forest bathing meditation
+- **Ikigai Reflection** - Purpose and meaning contemplation
+- **Zazen Sitting** - Seated Zen meditation
+
+### 🫁 **Breathing Exercises with Visual Guides**
+- **Box Breathing** - Navy SEAL focus technique (4-4-4-4)
+- **4-7-8 Relaxation** - Dr. Andrew Weil's natural tranquilizer
+- **Deep Breathing** - Simple stress relief breathing
+- **Immersive Experience** - Full-screen breathing visualizer with background animations
+
+### 📱 **Progressive Web App (PWA)**
+- Install on mobile devices
+- Offline functionality
+- Native app experience
+- Quick action shortcuts
 
 ## 🚀 Quick Start
 
-### Installation
+### Prerequisites
+- Node.js 18+ and npm
+- Modern web browser
+
+### Development Scripts
+
+```bash
+# Start development server (with automatic cleanup + browser opening)
+./start.sh
+
+# Start with deep cache reset (clears npm cache too)
+./start.sh reset
+
+# Stop all processes and cleanup
+./stop.sh
+
+# Run comprehensive tests
+./test.sh
+```
+
+### Manual Commands
+
 ```bash
 # Install dependencies
-npm install
-```
+cd web-app && npm install
 
-### Run Tests
-```bash
-npm test                  # Run all tests
-npm run test:coverage     # With coverage
-```
+# Start development server
+cd web-app && npm run dev
 
-### Development
-```bash
-npm start                 # Start application
+# Build for production
+cd web-app && npm run build
 
+# Run tests
+cd web-app && npx playwright test
 ```
 
 ---

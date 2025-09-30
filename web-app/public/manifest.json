@@ -1,7 +1,7 @@
 {
-  "name": "Focus & Productivity Timer",
-  "short_name": "Focus Timer",
-  "description": "AI-powered focus and productivity timer for work, study, exercise, and meditation",
+  "name": "LiveLong",
+  "short_name": "LiveLong",
+  "description": "Productivity timer inspired by Japanese longevity wisdom, for work, study, exercise, breathing, and meditation",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -25,10 +25,24 @@
   "screenshots": [],
   "shortcuts": [
     {
-      "name": "Quick Focus (25 min)",
+      "name": "Pomodoro Focus (25 min)",
       "short_name": "Focus",
       "description": "Start a 25-minute focus session",
       "url": "/?quick=focus",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Rajio Taiso (6 min)",
+      "short_name": "Exercise",
+      "description": "Japanese radio calisthenics",
+      "url": "/?quick=rajio-taiso",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Deep Breathing (14 min)",
+      "short_name": "Breathe",
+      "description": "Deep breathing for relaxation",
+      "url": "/?quick=deep-breathing",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
