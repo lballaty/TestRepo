@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Timer - Offline</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .offline-container {
+      background: white;
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .offline-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      opacity: 0.8;
+    }
+
+    h1 {
+      color: #1f2937;
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .offline-timer {
+      background: #f3f4f6;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .timer-display {
+      font-size: 48px;
+      font-weight: bold;
+      color: #1f2937;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-label {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <svg class="offline-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#9ca3af"/>
+    </svg>
+
+    <h1>You're Offline</h1>
+    <p>
+      <span class="status-dot"></span>
+      No internet connection detected
+    </p>
+
+    <div class="offline-timer">
+      <div class="timer-display" id="timer">25:00</div>
+      <div class="timer-label">Offline Timer Available</div>
+    </div>
+
+    <p>Don't worry! Your timer still works offline. Sessions will be saved locally and synced when you're back online.</p>
+
+    <button onclick="tryReconnect()">Try to Reconnect</button>
+  </div>
+
+  <script>
+    // Simple offline timer functionality
+    let seconds = 1500; // 25 minutes default
+    let isRunning = false;
+    let interval = null;
+
+    function updateDisplay() {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      document.getElementById('timer').textContent =
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function tryReconnect() {
+      window.location.reload();
+    }
+
+    // Check connection periodically
+    setInterval(() => {
+      if (navigator.onLine) {
+        window.location.reload();
+      }
+    }, 5000);
+
+    // Listen for online event
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

@@ -8,6 +8,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusTimerStore } from '@/store/focusTimerStore';
 import { TimerState } from '@/types/timer.types';
+import ProfileManager from '@/components/profiles/ProfileManager';
 
 export default function FocusTimerDisplay() {
   const {
@@ -28,6 +29,7 @@ export default function FocusTimerDisplay() {
   const [customMinutes, setCustomMinutes] = useState(25);
   const [customSeconds, setCustomSeconds] = useState(0);
   const [showCustomDurationPanel, setShowCustomDurationPanel] = useState(false);
+  const [showProfileManager, setShowProfileManager] = useState(false);
 
   // Initialize timer on mount
   useEffect(() => {
@@ -311,7 +313,25 @@ export default function FocusTimerDisplay() {
             </span>
           </span>
         </div>
+
+        {/* Profile Manager Button */}
+        <div className="mt-4">
+          <button
+            onClick={() => setShowProfileManager(!showProfileManager)}
+            className="w-full px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors text-sm font-medium"
+            data-testid="toggle-profiles-button"
+          >
+            {showProfileManager ? 'Hide Profiles' : 'Manage Profiles'}
+          </button>
+        </div>
       </div>
+
+      {/* Profile Manager Section */}
+      {showProfileManager && (
+        <div className="mt-6">
+          <ProfileManager />
+        </div>
+      )}
     </div>
   );
 }
