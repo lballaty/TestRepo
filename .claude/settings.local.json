@@ -17,7 +17,9 @@
       "Bash(git add .)",
       "Bash(git commit:*)",
       "Bash(./test.sh)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(./start.sh:*)",
+      "Bash(node:*)"
     ],
     "deny": [
       "Bash(rm -rf /)",

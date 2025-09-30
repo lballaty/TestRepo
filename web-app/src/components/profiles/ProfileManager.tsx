@@ -32,6 +32,14 @@ interface ProfileFormData {
   breakSeconds: number;
   color: string;
   icon: string;
+  isExerciseSeries: boolean;
+  exerciseSteps: Array<{
+    name: string;
+    description: string;
+    durationMinutes: number;
+    restDurationMinutes: number;
+    instructions: string;
+  }>;
 }
 
 const DEFAULT_PROFILES: UIProfile[] = [
@@ -79,7 +87,7 @@ const DEFAULT_PROFILES: UIProfile[] = [
     id: 'rajio-taiso',
     name: 'Rajio Taiso',
     description: 'Japanese radio calisthenics - series of energizing exercises',
-    durationMinutes: JAPANESE_EXERCISE_SERIES.RAJIO_TAISO.totalDurationMinutes,
+    durationMinutes: 6, // Rajio Taiso: 6 exercises x 1 min + warmup/cooldown
     breakMinutes: 1,
     isDefault: false,
     color: '#dc2626',
@@ -90,7 +98,7 @@ const DEFAULT_PROFILES: UIProfile[] = [
     id: 'tai-chi-morning',
     name: 'Tai Chi Morning',
     description: 'Gentle flowing movements series for longevity',
-    durationMinutes: JAPANESE_EXERCISE_SERIES.TAI_CHI_MORNING.totalDurationMinutes,
+    durationMinutes: 8, // Tai Chi: 5 exercises + warmup/cooldown
     breakMinutes: 2,
     isDefault: false,
     color: '#059669',
@@ -101,7 +109,7 @@ const DEFAULT_PROFILES: UIProfile[] = [
     id: 'shinrin-yoku',
     name: 'Shinrin-yoku',
     description: 'Forest bathing meditation series - mindful nature connection',
-    durationMinutes: JAPANESE_EXERCISE_SERIES.SHINRIN_YOKU.totalDurationMinutes,
+    durationMinutes: 6, // Shinrin-yoku: 4 exercises + warmup/cooldown
     breakMinutes: 5,
     isDefault: false,
     color: '#065f46',
@@ -247,7 +255,9 @@ export default function ProfileManager() {
     breakMinutes: 5,
     breakSeconds: 0,
     color: '#3b82f6',
-    icon: '🍅'
+    icon: '🍅',
+    isExerciseSeries: false,
+    exerciseSteps: []
   });
 
   const { setActiveTimerProfile, initializeTimerWithSeconds } = useFocusTimerStore();
@@ -379,7 +389,9 @@ export default function ProfileManager() {
       breakMinutes: 5,
       breakSeconds: 0,
       color: '#3b82f6',
-      icon: '🍅'
+      icon: '🍅',
+      isExerciseSeries: false,
+      exerciseSteps: []
     });
   };
 
