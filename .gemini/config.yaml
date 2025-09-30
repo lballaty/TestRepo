@@ -1,0 +1,184 @@
+# Gemini Project Configuration (config.yaml)
+# This configuration file is used by Google Gemini to define project structure,
+# files and directories that should be excluded from the model's context, and
+# development workflow preferences. This improves performance and prevents
+# grounding on irrelevant or sensitive data.
+# Exclusions use standard glob patterns, relative to the project root.
+
+# Project Metadata
+project:
+  name: "${PROJECT_NAME}"
+  version: "1.0.0"
+  template: "${TEMPLATE}"
+  description: "AI-assisted development project with multi-assistant coordination"
+
+# Context Exclusions - Files/directories to exclude from Gemini's context
+exclude:
+  # Build/Dependency directories
+  - "node_modules/"
+  - "dist/"
+  - "build/"
+  - ".next/"
+  - "target/"
+  - "*.egg-info/"
+  - "__pycache__/"
+  - "**/__pycache__/"
+
+  # Development/Environment files
+  - "venv/"
+  - "env/"
+  - ".venv/"
+  - "*.pyc"
+  - "*.pyo"
+  - "*.log"
+  - "*.tmp"
+  - "*.temp"
+  - ".DS_Store"
+  - "Thumbs.db"
+
+  # Sensitive or large data files (NEVER include these)
+  - ".env"
+  - ".env.*"
+  - "!.env.example"  # Exception: .env.example is safe
+  - "credentials.json"
+  - "credentials.*"
+  - "api_keys.txt"
+  - "*secret*"
+  - "*password*"
+  - "*.key"
+  - "*.pem"
+  - "*.sqlite"
+  - "*.db"
+
+  # Vector database data
+  - "vectordb/*.db"
+  - "vectordb/*.index"
+  - "chroma_data/"
+  - "*.faiss"
+
+  # Redis data
+  - "redis-data/"
+  - "dump.rdb"
+  - "appendonly.aof"
+
+  # AI assistant configs (other than Gemini's own)
+  - ".claude/"
+
+  # Git and version control
+  - ".git/"
+  - ".gitignore"
+
+  # IDE and editor files
+  - ".vscode/"
+  - ".idea/"
+  - "*.swp"
+  - "*.swo"
+  - "*~"
+
+  # Test coverage and reports
+  - "coverage/"
+  - "htmlcov/"
+  - ".coverage"
+  - ".pytest_cache/"
+  - ".nyc_output/"
+
+  # Documentation builds
+  - "docs/_build/"
+  - "site/"
+
+# Priority Context - Files that should ALWAYS be included in context
+# These are read first to understand project structure and rules
+priorityContext:
+  - "PROJECT_RULES.md"
+  - "GEMINI.md"
+  - ".gemini/style-guide.md"
+  - "docs/TODO.md"
+  - "docs/REQUIREMENTS.md"
+  - "docs/SPECIFICATIONS.md"
+  - "docs/DESIGN.md"
+  - "README.md"
+  - ".env.example"
+
+# File Watch Patterns - Patterns for files to monitor for changes
+watch:
+  # Source code
+  - "src/**/*.py"
+  - "src/**/*.js"
+  - "src/**/*.ts"
+  - "src/**/*.tsx"
+  - "src/**/*.jsx"
+
+  # Tests
+  - "tests/**/*.py"
+  - "tests/**/*.js"
+  - "tests/**/*.ts"
+
+  # Configuration
+  - "*.json"
+  - "*.yaml"
+  - "*.yml"
+  - "*.toml"
+
+  # Database
+  - "database/migrations/*.sql"
+  - "database/schemas/*.sql"
+
+  # Documentation
+  - "docs/**/*.md"
+  - "*.md"
+
+# Development Workflow Preferences
+workflow:
+  # Git Configuration
+  git:
+    commitFormat:
+      types:
+        - "feat"      # New feature
+        - "fix"       # Bug fix
+        - "docs"      # Documentation only
+        - "test"      # Adding or updating tests
+        - "refactor"  # Code refactoring
+        - "perf"      # Performance improvement
+        - "chore"     # Maintenance tasks
+
+      template: |
+        <type>: <short description>
+
+        <detailed explanation>
+
+        Files changed:
+        - <file>: <description>
+
+        Questions: libor@arionetworks.com
+
+    author:
+      name: "Libor Ballaty"
+      email: "libor@arionetworks.com"
+
+  # Testing Requirements
+  testing:
+    required: true
+    testFirst: true
+    minCoverage: 80
+    commands:
+      python:
+        - "pytest"
+        - "pytest --cov"
+      javascript:
+        - "npm test"
+        - "npm run test:coverage"
+
+  # Code Quality
+  codeQuality:
+    linting:
+      python:
+        - "black"
+        - "flake8"
+        - "mypy"
+      javascript:
+        - "eslint"
+
+    standards:
+      python: "PEP 8"
+      javascript: "ESLint recommended"
+      typescript: "strict"

@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables (NEVER COMMIT SECRETS)
+.env
+.env.*
+!.env.example
+
+# Secrets (NEVER COMMIT)
+*.key
+*.pem
+credentials.json
+credentials.*
+*secret*
+*password*
+api_keys.txt
+
+# Test coverage
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+.nyc_output/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite
+*.db
+dump.rdb
+appendonly.aof
+redis-data/
+
+# Vector DB
+vectordb/*.db
+vectordb/*.index
+chroma_data/
+*.faiss
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+
+# OS
+Thumbs.db

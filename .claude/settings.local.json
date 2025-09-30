@@ -36,7 +36,11 @@
       "Bash(lsof:)",
       "Glob:",
       "Grep:",
-      "Bash(flutter packages pub run build_runner build:*)"
+      "Bash(flutter packages pub run build_runner build:*)",
+      "Bash(npm test:*)",
+      "Bash(npm install:*)",
+      "Read(//Users/liborballaty/LocalProjects/GitHubProjectsDocuments/**)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [
       "MultiEdit(**/*.dart)",
