@@ -1,0 +1,217 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "LiveLong ⊹" [level=1] [ref=e5]
+        - heading "Deep Work" [level=2] [ref=e6]
+        - paragraph [ref=e7]: 90-minute deep focus blocks
+      - generic [ref=e8]:
+        - img [ref=e9]
+        - generic [ref=e12]:
+          - generic [ref=e13]: 00:00
+          - generic [ref=e14]: 100% complete
+      - button "Start Focus Session" [ref=e16] [cursor=pointer]
+      - generic [ref=e17]:
+        - paragraph [ref=e18]: "Quick Presets:"
+        - generic [ref=e19]:
+          - button "30 sec" [ref=e20] [cursor=pointer]
+          - button "45 sec" [ref=e21] [cursor=pointer]
+          - button "1 min" [ref=e22] [cursor=pointer]
+          - button "5 min" [ref=e23] [cursor=pointer]
+          - button "15 min" [ref=e24] [cursor=pointer]
+          - button "25 min" [ref=e25] [cursor=pointer]
+      - button "Set Custom Duration" [ref=e26] [cursor=pointer]
+      - generic [ref=e28]:
+        - text: "Timer Status:"
+        - generic [ref=e29]: idle
+      - button "Hide Profiles" [ref=e31] [cursor=pointer]
+    - generic [ref=e33]:
+      - heading "Timer Profiles" [level=2] [ref=e34]
+      - generic [ref=e35]:
+        - generic [ref=e36] [cursor=pointer]:
+          - generic [ref=e38] [cursor=pointer]:
+            - generic [ref=e39] [cursor=pointer]: 🍅
+            - heading "Pomodoro" [level=3] [ref=e40] [cursor=pointer]
+          - paragraph [ref=e41] [cursor=pointer]: Classic 25-minute focus sessions
+          - generic [ref=e42] [cursor=pointer]:
+            - generic [ref=e43] [cursor=pointer]: 25 min
+            - generic [ref=e44] [cursor=pointer]: "Break: 5 min"
+        - generic [ref=e45] [cursor=pointer]:
+          - generic [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]:
+              - generic [ref=e48] [cursor=pointer]: 🧠
+              - heading "Deep Work" [level=3] [ref=e49] [cursor=pointer]
+            - button "Delete" [ref=e50] [cursor=pointer]
+          - paragraph [ref=e51] [cursor=pointer]: 90-minute deep focus blocks
+          - generic [ref=e52] [cursor=pointer]:
+            - generic [ref=e53] [cursor=pointer]: 90 min
+            - generic [ref=e54] [cursor=pointer]: "Break: 15 min"
+          - button "Edit Profile" [ref=e55] [cursor=pointer]
+        - generic [ref=e56] [cursor=pointer]:
+          - generic [ref=e57] [cursor=pointer]:
+            - generic [ref=e58] [cursor=pointer]:
+              - generic [ref=e59] [cursor=pointer]: 💪
+              - heading "Exercise Intervals" [level=3] [ref=e60] [cursor=pointer]
+            - button "Delete" [ref=e61] [cursor=pointer]
+          - paragraph [ref=e62] [cursor=pointer]: 30-second high intensity intervals
+          - generic [ref=e63] [cursor=pointer]:
+            - generic [ref=e64] [cursor=pointer]: 30 sec
+            - generic [ref=e65] [cursor=pointer]: "Break: 30 sec"
+        - generic [ref=e66] [cursor=pointer]:
+          - generic [ref=e67] [cursor=pointer]:
+            - generic [ref=e68] [cursor=pointer]:
+              - generic [ref=e69] [cursor=pointer]: 🧘
+              - heading "Meditation" [level=3] [ref=e70] [cursor=pointer]
+            - button "Delete" [ref=e71] [cursor=pointer]
+          - paragraph [ref=e72] [cursor=pointer]: 10-minute mindfulness sessions
+          - generic [ref=e73] [cursor=pointer]:
+            - generic [ref=e74] [cursor=pointer]: 10 min
+            - generic [ref=e75] [cursor=pointer]: "Break: 2 min"
+        - generic [ref=e76] [cursor=pointer]:
+          - generic [ref=e77] [cursor=pointer]:
+            - generic [ref=e78] [cursor=pointer]:
+              - generic [ref=e79] [cursor=pointer]: 📻
+              - heading "Rajio Taiso" [level=3] [ref=e80] [cursor=pointer]
+            - button "Delete" [ref=e81] [cursor=pointer]
+          - paragraph [ref=e82] [cursor=pointer]: Japanese radio calisthenics - series of energizing exercises
+          - generic [ref=e83] [cursor=pointer]:
+            - generic [ref=e84] [cursor=pointer]: Exercise Series (6 steps)
+            - generic [ref=e85] [cursor=pointer]:
+              - generic [ref=e86] [cursor=pointer]: Neck and Arm Stretches (1min)
+              - generic [ref=e87] [cursor=pointer]: → Arm Swings (1min)
+              - generic [ref=e88] [cursor=pointer]: → Chest Expansion (1min)
+              - generic [ref=e89] [cursor=pointer]: → Side Bends (1min)
+              - generic [ref=e90] [cursor=pointer]: → Trunk Twists (1min)
+              - generic [ref=e91] [cursor=pointer]: → Leg Swings (1min)
+          - generic [ref=e92] [cursor=pointer]:
+            - generic [ref=e93] [cursor=pointer]: 8 min
+            - generic [ref=e94] [cursor=pointer]: "Break: 1 min"
+        - generic [ref=e95] [cursor=pointer]:
+          - generic [ref=e96] [cursor=pointer]:
+            - generic [ref=e97] [cursor=pointer]:
+              - generic [ref=e98] [cursor=pointer]: 🌅
+              - heading "Tai Chi Morning" [level=3] [ref=e99] [cursor=pointer]
+            - button "Delete" [ref=e100] [cursor=pointer]
+          - paragraph [ref=e101] [cursor=pointer]: Gentle flowing movements series for longevity
+          - generic [ref=e102] [cursor=pointer]:
+            - generic [ref=e103] [cursor=pointer]: Exercise Series (5 steps)
+            - generic [ref=e104] [cursor=pointer]:
+              - generic [ref=e105] [cursor=pointer]: Beginning Stance (2min)
+              - generic [ref=e106] [cursor=pointer]: → Raise Arms (2min)
+              - generic [ref=e107] [cursor=pointer]: → Wave Hands Like Clouds (3min)
+              - generic [ref=e108] [cursor=pointer]: → Single Whip (3min)
+              - generic [ref=e109] [cursor=pointer]: → Embrace Tiger, Return to Mountain (3min)
+          - generic [ref=e110] [cursor=pointer]:
+            - generic [ref=e111] [cursor=pointer]: 17 min
+            - generic [ref=e112] [cursor=pointer]: "Break: 2 min"
+        - generic [ref=e113] [cursor=pointer]:
+          - generic [ref=e114] [cursor=pointer]:
+            - generic [ref=e115] [cursor=pointer]:
+              - generic [ref=e116] [cursor=pointer]: 🌲
+              - heading "Shinrin-yoku" [level=3] [ref=e117] [cursor=pointer]
+            - button "Delete" [ref=e118] [cursor=pointer]
+          - paragraph [ref=e119] [cursor=pointer]: Forest bathing meditation series - mindful nature connection
+          - generic [ref=e120] [cursor=pointer]:
+            - generic [ref=e121] [cursor=pointer]: Exercise Series (4 steps)
+            - generic [ref=e122] [cursor=pointer]:
+              - generic [ref=e123] [cursor=pointer]: Sensory Awakening (4min)
+              - generic [ref=e124] [cursor=pointer]: → Mindful Breathing (5min)
+              - generic [ref=e125] [cursor=pointer]: → Tree Connection (6min)
+              - generic [ref=e126] [cursor=pointer]: → Gratitude Reflection (4min)
+          - generic [ref=e127] [cursor=pointer]:
+            - generic [ref=e128] [cursor=pointer]: 26 min
+            - generic [ref=e129] [cursor=pointer]: "Break: 5 min"
+        - generic [ref=e130] [cursor=pointer]:
+          - generic [ref=e131] [cursor=pointer]:
+            - generic [ref=e132] [cursor=pointer]:
+              - generic [ref=e133] [cursor=pointer]: 🍵
+              - heading "Hara Hachi Bu" [level=3] [ref=e134] [cursor=pointer]
+            - button "Delete" [ref=e135] [cursor=pointer]
+          - paragraph [ref=e136] [cursor=pointer]: 12-minute mindful eating practice
+          - generic [ref=e137] [cursor=pointer]:
+            - generic [ref=e138] [cursor=pointer]: 12 min
+            - generic [ref=e139] [cursor=pointer]: "Break: 3 min"
+        - generic [ref=e140] [cursor=pointer]:
+          - generic [ref=e141] [cursor=pointer]:
+            - generic [ref=e142] [cursor=pointer]:
+              - generic [ref=e143] [cursor=pointer]: 🎋
+              - heading "Ikigai Reflection" [level=3] [ref=e144] [cursor=pointer]
+            - button "Delete" [ref=e145] [cursor=pointer]
+          - paragraph [ref=e146] [cursor=pointer]: 25-minute purpose and meaning contemplation
+          - generic [ref=e147] [cursor=pointer]:
+            - generic [ref=e148] [cursor=pointer]: 25 min
+            - generic [ref=e149] [cursor=pointer]: "Break: 5 min"
+        - generic [ref=e150] [cursor=pointer]:
+          - generic [ref=e151] [cursor=pointer]:
+            - generic [ref=e152] [cursor=pointer]:
+              - generic [ref=e153] [cursor=pointer]: ⛩️
+              - heading "Zazen Sitting" [level=3] [ref=e154] [cursor=pointer]
+            - button "Delete" [ref=e155] [cursor=pointer]
+          - paragraph [ref=e156] [cursor=pointer]: 30-minute seated Zen meditation
+          - generic [ref=e157] [cursor=pointer]:
+            - generic [ref=e158] [cursor=pointer]: 30 min
+            - generic [ref=e159] [cursor=pointer]: "Break: 5 min"
+        - generic [ref=e160] [cursor=pointer]:
+          - generic [ref=e161] [cursor=pointer]:
+            - generic [ref=e162] [cursor=pointer]:
+              - generic [ref=e163] [cursor=pointer]: 🚶
+              - heading "Longevity Walk" [level=3] [ref=e164] [cursor=pointer]
+            - button "Delete" [ref=e165] [cursor=pointer]
+          - paragraph [ref=e166] [cursor=pointer]: 45-minute mindful walking practice
+          - generic [ref=e167] [cursor=pointer]:
+            - generic [ref=e168] [cursor=pointer]: 45 min
+            - generic [ref=e169] [cursor=pointer]: "Break: 10 min"
+        - generic [ref=e170] [cursor=pointer]:
+          - generic [ref=e171] [cursor=pointer]:
+            - generic [ref=e172] [cursor=pointer]:
+              - generic [ref=e173] [cursor=pointer]: ⬜
+              - heading "Box Breathing" [level=3] [ref=e174] [cursor=pointer]
+            - button "Delete" [ref=e175] [cursor=pointer]
+          - paragraph [ref=e176] [cursor=pointer]: Navy SEAL technique for focus and stress reduction
+          - generic [ref=e177] [cursor=pointer]:
+            - generic [ref=e178] [cursor=pointer]: Exercise Series (1 steps)
+            - generic [ref=e180] [cursor=pointer]: Box Breathing (5.3min)
+          - generic [ref=e181] [cursor=pointer]:
+            - generic [ref=e182] [cursor=pointer]: 5 min
+            - generic [ref=e183] [cursor=pointer]: "Break: 2 min"
+        - generic [ref=e184] [cursor=pointer]:
+          - generic [ref=e185] [cursor=pointer]:
+            - generic [ref=e186] [cursor=pointer]:
+              - generic [ref=e187] [cursor=pointer]: 🌊
+              - heading "4-7-8 Relaxation" [level=3] [ref=e188] [cursor=pointer]
+            - button "Delete" [ref=e189] [cursor=pointer]
+          - paragraph [ref=e190] [cursor=pointer]: Dr. Andrew Weil's natural tranquilizer technique
+          - generic [ref=e191] [cursor=pointer]:
+            - generic [ref=e192] [cursor=pointer]: Exercise Series (1 steps)
+            - generic [ref=e194] [cursor=pointer]: 4-7-8 Breathing (11.5min)
+          - generic [ref=e195] [cursor=pointer]:
+            - generic [ref=e196] [cursor=pointer]: 11 min
+            - generic [ref=e197] [cursor=pointer]: "Break: 3 min"
+        - generic [ref=e198] [cursor=pointer]:
+          - generic [ref=e199] [cursor=pointer]:
+            - generic [ref=e200] [cursor=pointer]:
+              - generic [ref=e201] [cursor=pointer]: 💨
+              - heading "Deep Breathing" [level=3] [ref=e202] [cursor=pointer]
+            - button "Delete" [ref=e203] [cursor=pointer]
+          - paragraph [ref=e204] [cursor=pointer]: Simple deep breathing for stress relief
+          - generic [ref=e205] [cursor=pointer]:
+            - generic [ref=e206] [cursor=pointer]: Exercise Series (1 steps)
+            - generic [ref=e208] [cursor=pointer]: Deep Breathing (14min)
+          - generic [ref=e209] [cursor=pointer]:
+            - generic [ref=e210] [cursor=pointer]: 14 min
+            - generic [ref=e211] [cursor=pointer]: "Break: 2 min"
+        - generic [ref=e213] [cursor=pointer]:
+          - generic [ref=e214] [cursor=pointer]: ➕
+          - paragraph [ref=e215] [cursor=pointer]: Create Profile
+    - generic [ref=e216]:
+      - generic [ref=e217] [cursor=pointer]:
+        - generic [ref=e218] [cursor=pointer]: 🔄
+        - generic [ref=e219] [cursor=pointer]: PWA Enabled
+      - generic [ref=e221]:
+        - generic [ref=e222]: Install app?
+        - button "Install" [ref=e223] [cursor=pointer]
+  - alert [ref=e224]
+```
