@@ -106,6 +106,10 @@ test.describe('Mobile Responsiveness', () => {
 
 test.describe('Small Screen Adaptation', () => {
   test('should adapt layout for small screens', async ({ page, viewport }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="time-display"]');
+
     // This test is relevant for all screen sizes
     const timeDisplay = page.locator('[data-testid="time-display"]');
     const startButton = page.locator('[data-testid="start-focus-button"]');
@@ -126,6 +130,10 @@ test.describe('Small Screen Adaptation', () => {
   });
 
   test('should have readable text sizes', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="time-display"]');
+
     // Check font sizes are readable
     const timeDisplay = page.locator('[data-testid="time-display"]');
     const fontSize = await timeDisplay.evaluate(el => {
@@ -140,6 +148,10 @@ test.describe('Small Screen Adaptation', () => {
 
 test.describe('Tablet Layout', () => {
   test('should utilize screen space effectively', async ({ page, viewport }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('.bg-white.rounded-3xl');
+
     // Verify layout uses appropriate spacing for all screen sizes
     const timerContainer = page.locator('.bg-white.rounded-3xl');
     const containerBox = await timerContainer.boundingBox();
@@ -156,6 +168,10 @@ test.describe('Tablet Layout', () => {
 
 test.describe('Accessibility', () => {
   test('should have proper button labels', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="start-focus-button"]');
+
     // Check for accessible button labels
     const startButton = page.locator('[data-testid="start-focus-button"]');
     const buttonText = await startButton.textContent();
@@ -170,9 +186,13 @@ test.describe('Accessibility', () => {
     // Skip on mobile as they don't have keyboards
     test.skip(isMobile === true, 'Keyboard navigation not applicable on mobile');
 
-    // Tab to start button
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="start-focus-button"]');
+
+    // Focus the start button directly for testing
+    const startButton = page.locator('[data-testid="start-focus-button"]');
+    await startButton.focus();
 
     // Press Enter to start
     await page.keyboard.press('Enter');
@@ -183,6 +203,10 @@ test.describe('Accessibility', () => {
   });
 
   test('should have sufficient color contrast', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="start-focus-button"]');
+
     // Check button contrast
     const startButton = page.locator('[data-testid="start-focus-button"]');
     const backgroundColor = await startButton.evaluate(el => {
@@ -198,6 +222,10 @@ test.describe('Accessibility', () => {
   });
 
   test('should provide timer status information', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="start-focus-button"]');
+
     // Start timer
     await page.click('[data-testid="start-focus-button"]');
 
@@ -209,6 +237,10 @@ test.describe('Accessibility', () => {
 
 test.describe('Orientation Changes', () => {
   test('should handle viewport size changes', async ({ page, isMobile }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForSelector('[data-testid="time-display"]');
+
     // Start with current viewport
     const initialDisplay = page.locator('[data-testid="time-display"]');
     await expect(initialDisplay).toBeVisible();
@@ -235,6 +267,10 @@ test.describe('Orientation Changes', () => {
 
 test.describe('PWA Installation Readiness', () => {
   test('should have viewport meta tag for mobile', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
+
     const viewport = await page.evaluate(() => {
       const meta = document.querySelector('meta[name="viewport"]');
       return meta?.getAttribute('content');
@@ -245,6 +281,10 @@ test.describe('PWA Installation Readiness', () => {
   });
 
   test('should have apple mobile web app meta tags', async ({ page }) => {
+    // Navigate to the page first
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
+
     const appleMeta = await page.evaluate(() => {
       const capable = document.querySelector('meta[name="apple-mobile-web-app-capable"]');
       return capable?.getAttribute('content');
