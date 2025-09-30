@@ -79,7 +79,20 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
-### Testing
+### Testing Strategy
+
+**⚠️ CRITICAL: GUI Testing is MANDATORY - ALL UI functions must be tested WITHOUT EXCEPTION**
+
+#### Testing Stack
+- **Unit Tests:** Jest + React Testing Library
+- **E2E Tests:** Playwright (MANDATORY for all UI workflows)
+- **NO framework changes without explicit approval**
+
+#### Coverage Requirements
+- Unit Tests: 80% minimum
+- Component Tests: 100% coverage
+- E2E Tests: 100% of user workflows
+- See `TESTING_REQUIREMENTS.md` for detailed requirements
 
 ```bash
 # Run all tests
@@ -92,6 +105,15 @@ npm run test:coverage
 npm run test:unit
 npm run test:integration
 npm run test:regression
+
+# E2E tests with Playwright
+npm run test:e2e
+
+# Visual regression tests
+npm run test:visual
+
+# Accessibility tests
+npm run test:a11y
 
 # CI mode
 npm run test:ci
