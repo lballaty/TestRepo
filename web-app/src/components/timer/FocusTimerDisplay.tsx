@@ -85,8 +85,10 @@ export default function FocusTimerDisplay() {
 
   // Check if current profile is a breathing profile and set up breathing mode
   useEffect(() => {
-    if (activeTimerProfile && activeTimerProfile.exerciseSeries?.backgroundAnimation?.includes('breathing') ||
-        ['box-breathing', '4-7-8-breathing', 'deep-breathing'].includes(activeTimerProfile.id)) {
+    if (activeTimerProfile && (
+        activeTimerProfile.exerciseSeries?.backgroundAnimation?.includes('breathing') ||
+        ['box-breathing', '4-7-8-breathing', 'deep-breathing'].includes(activeTimerProfile.id)
+      )) {
       // Get breathing pattern based on profile
       let pattern = null;
       switch (activeTimerProfile.id) {
